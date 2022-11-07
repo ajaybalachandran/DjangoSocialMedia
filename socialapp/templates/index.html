@@ -39,21 +39,22 @@
             </div>
             <!-- Featured blog post-->
             <!-- posts -->
-    
+            {%if allposts%}
+            {%for post in allposts%}
             <div class="bg-white p-4 rounded shadow mt-3 mb-3">
                 <!-- author -->
                 <div class="d-flex justify-content-between">
                     <!-- avatar -->
                     <div class="d-flex">
                         <img
-                            src="https://source.unsplash.com/collection/happy-people"
+                            src="{{post.user.profile_pic.url}}"
                             alt="avatar"
                             class="rounded-circle me-2"
                             style="width: 38px; height: 38px; object-fit: cover"
                         />
                         <div>
-                            <p class="m-0 fw-bold">John</p>
-                            <span class="text-muted fs-7">July 17 at 1:23 pm</span>
+                            <p class="m-0 fw-bold">{{post.user}}</p>
+                            <span class="text-muted fs-7">{{post.posted_date}}</span>
                         </div>
                     </div>
                     <!-- edit -->
@@ -96,12 +97,13 @@
                     <!-- content -->
                     <div>
                         <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                            Quae fuga incidunt consequatur tenetur doloremque officia
-                            corrupti provident tempore vitae labore?
+                            {{post.title}}
+                        </p>
+                        <p>
+                            {{post.description}}
                         </p>
                         <img
-                            src="https://source.unsplash.com/random/12"
+                            src="{{post.post_image.url}}"
                             alt="post image"
                             class="img-fluid rounded"
                         />
@@ -209,8 +211,11 @@
                     </div>
                 </div>
             </div>
+            {%endfor%}
+            {%endif%}
             <!-- post-ended -->
         </div>
+        
 
         <!-- Side widgets-->
         <div class="col-lg-4">

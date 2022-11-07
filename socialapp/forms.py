@@ -11,7 +11,7 @@ class RegistrationForm(UserCreationForm):
   'placeholder': 'Email'}), label='')
   username  = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 
   'placeholder': 'Username'}), label='')
-  profile_pic = forms.CharField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+
   password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 
   'placeholder': 'Password'}), label='')
   password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 
@@ -19,7 +19,7 @@ class RegistrationForm(UserCreationForm):
   class Meta:
     model = Myuser
     fields = ['first_name', 'last_name', 'email', 
-    'username', 'profile_pic', 'password1', 'password2']
+    'username', 'password1', 'password2']
 
 
 class LoginForm(forms.Form):

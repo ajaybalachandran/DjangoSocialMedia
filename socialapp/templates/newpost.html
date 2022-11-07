@@ -8,9 +8,12 @@
       <div class="modal-body">
         <form action="{%url 'social-new-post'%}" method="post" enctype="multipart/form-data">
           {%csrf_token%}
-          <input type="text" name="title" id="" class="form-control" required>
-          <textarea name="description" id="" cols="10" rows="10" class="form-control" required></textarea>
-          <input type="file" class="form-control" name="post_image" required>
+          <input type="text" name="title" id="" class="form-control mb-3" placeholder="Title" required>
+          <textarea name="description" id="" cols="" rows="5" class="form-control mb-3" placeholder="Description" required></textarea>
+          <div class="form-control mb-3">
+            <input type="file" id="files" name="post_image" class="hidden" required/>
+            <label for="files" class="fst-italic fw-light" style="font-size: small;">Select Profile Picture</label>
+          </div>
           <input type="submit" value="Create Post">
         </form>
       </div>

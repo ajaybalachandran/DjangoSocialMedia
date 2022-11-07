@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView, FormView, TemplateView
+from django.views.generic import View, CreateView, FormView, TemplateView, ListView
 from socialapp.forms import RegistrationForm, LoginForm
 from socialapp.models import Myuser, Posts
 from django.urls import reverse_lazy
@@ -16,8 +16,14 @@ def signin_required(fn):
   return wrapper
 
 @method_decorator(signin_required, name='dispatch')
-class HomeView(TemplateView):
-  template_name = 'index.html'
+class HomeView(View):
+  def get(self, request, *args, **kwargs):
+    
+    posts = Posts.objects.all().exclude(user=self.request.user)
+    if posts:
+      return render(request, 'index.html', {'allposts': posts})
+    else:
+      return render(request, 'index.html')
 
 class RegistrationView(CreateView):
   model = Myuser
@@ -25,9 +31,9 @@ class RegistrationView(CreateView):
   template_name = 'signup.html'
   success_url = reverse_lazy('social-login')
   
-  def form_valid(self, form):
-    form.instance.profile_pic = self.request.FILES['profile_pic']
-    return super().form_valid(form)
+  # def form_valid(self, form):
+  #   form.instance.profile_pic = self.request.FILES['profile_pic']
+  #   return super().form_valid(form)
 
 
 class LoginView(FormView):
@@ -64,3 +70,10 @@ class PostsView(View):
     Posts.objects.create(title=title, description=description, 
     post_image=post_image, user=request.user)
     return redirect('social-home')
+
+
+# class PostListView(ListView):
+#   template_name = 'index.html'
+#   model = Posts
+#   context_object_name = 'allposts'
+
