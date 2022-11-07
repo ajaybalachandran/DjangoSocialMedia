@@ -1,0 +1,23 @@
+<div class="modal fade mt-5" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Post</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{%url 'social-new-post'%}" method="post" enctype="multipart/form-data">
+          {%csrf_token%}
+          <input type="text" name="title" id="" class="form-control" required>
+          <textarea name="description" id="" cols="10" rows="10" class="form-control" required></textarea>
+          <input type="file" class="form-control" name="post_image" required>
+          <input type="submit" value="Create Post">
+        </form>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      <!-- <button type="button" class="btn btn-success">Post</button> -->
+      </div>
+  </div>
+  </div>
+</div>

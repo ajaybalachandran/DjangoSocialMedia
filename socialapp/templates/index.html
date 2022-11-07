@@ -1,0 +1,261 @@
+{%extends 'base.html'%}
+{%block body_block%}
+
+
+<!-- Page content-->
+<div class="container">
+    <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+            <!-- create a post -->
+            <div>
+                <div class="d-flex" type="button">
+                    <div class="p-1">
+                        <img
+                            src="{{request.user.profile_pic.url}}"
+                            alt="avatar"
+                            class="rounded-circle me-2"
+                            style="width: 38px; height: 38px; object-fit: cover"
+                        />
+                    </div>
+                    <a data-toggle="modal" href="#createModal {%url 'social-new-post'%}" class="form-control border-0" style="text-decoration: none; ">
+                        <input
+                        type="text"
+                        class="form-control rounded-pill border-0 bg-gray pointer"
+                        disabled
+                        placeholder="What's on your mind, {{request.user}}?"
+                        data-bs-toggle="modal"
+                        data-bs-target="#createModal"
+                        />
+                    </a>
+                    
+                </div>
+
+                
+                <!-- Modal -->
+                {%include 'newpost.html'%}
+            
+                
+            </div>
+            <!-- Featured blog post-->
+            <!-- posts -->
+    
+            <div class="bg-white p-4 rounded shadow mt-3 mb-3">
+                <!-- author -->
+                <div class="d-flex justify-content-between">
+                    <!-- avatar -->
+                    <div class="d-flex">
+                        <img
+                            src="https://source.unsplash.com/collection/happy-people"
+                            alt="avatar"
+                            class="rounded-circle me-2"
+                            style="width: 38px; height: 38px; object-fit: cover"
+                        />
+                        <div>
+                            <p class="m-0 fw-bold">John</p>
+                            <span class="text-muted fs-7">July 17 at 1:23 pm</span>
+                        </div>
+                    </div>
+                    <!-- edit -->
+                    <i
+                    class="fas fa-ellipsis-h"
+                    type="button"
+                    id="post1Menu"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    >
+                    </i>
+                    <!-- edit menu -->
+                    <ul
+                    class="dropdown-menu border-0 shadow"
+                    aria-labelledby="post1Menu"
+                    >
+                        <li class="d-flex align-items-center">
+                            <a
+                                class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                                href="#"
+                            >
+                                Edit Post
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <a
+                            class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                            href="#"
+                            >
+                            Delete Post</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                <!-- post content -->
+                <div class="mt-3">
+                    <!-- content -->
+                    <div>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Quae fuga incidunt consequatur tenetur doloremque officia
+                            corrupti provident tempore vitae labore?
+                        </p>
+                        <img
+                            src="https://source.unsplash.com/random/12"
+                            alt="post image"
+                            class="img-fluid rounded"
+                        />
+                    </div>
+                    <!-- likes & comments -->
+                    <div class="mt-3 d-flex justify-content-between">
+                        <div><i class="text-primary fas fa-thumbs-up"></i> 10</div>
+                        <div>2 Comments</i></div>
+                    </div>
+                    <hr>
+                    <!-- comment&like buttons -->
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="" class="btn text-muted" style="border: none;">
+                                <i class="fas fa-thumbs-up me-3"></i>
+                                <span class="m-0">Like</span>
+                            </a>
+                        
+                        </div>
+                        <div>
+                            <a class="btn text-muted" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fas fa-comment-alt me-3"></i>
+                                <span class="m-0">Comment</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- comment collapse -->
+                    <div class="collapse mt-3" id="collapseExample">
+                        <div class="card card-body">
+                            <!-- comment 1 -->
+                            <div class="d-flex align-items-center my-1">
+                                <!-- avatar -->
+                                <img
+                                src="https://source.unsplash.com/collection/happy-people"
+                                alt="avatar"
+                                class="rounded-circle me-2"
+                                style="
+                                    width: 38px;
+                                    height: 38px;
+                                    object-fit: cover;
+                                "
+                                />
+                                <!-- comment text -->
+                                <div class="p-3 rounded comment__input w-100">
+                                    <!-- comment menu of author -->
+                                    <div class="d-flex justify-content-end">
+                                        <!-- icon -->
+                                        <i
+                                        class="fas fa-ellipsis-h text-blue pointer"
+                                        id="post1CommentMenuButton"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        ></i>
+                                        <!-- menu -->
+                                        <ul
+                                        class="dropdown-menu border-0 shadow"
+                                        aria-labelledby="post1CommentMenuButton"
+                                        >
+                                            <li class="d-flex align-items-center">
+                                                <a
+                                                class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                                                href="#"
+                                                >
+                                                Edit Comment</a
+                                                >
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <a
+                                                class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                                                href="#"
+                                                >
+                                                Delete Comment</a
+                                                >
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p class="fw-bold m-0">John</p>
+                                    <p class="m-0 fs-7 bg-gray p-2 rounded">
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit.
+                                    </p>
+                                </div>
+                            </div>
+                            <form class="d-flex my-1">
+                                <!-- avatar -->
+                                <div>
+                                    <img
+                                        src="{{request.user.profile_pic.url}}"
+                                        class="rounded-circle me-2"
+                                        style="
+                                        width: 38px;
+                                        height: 38px;
+                                        object-fit: cover;
+                                        "
+                                    />
+                                </div>
+                                <!-- input -->
+                                <input
+                                type="text"
+                                class="form-control border-0 rounded-pill bg-gray"
+                                placeholder="Write a comment"
+                                />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- post-ended -->
+        </div>
+
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            
+            <div class="">
+                <!-- Search widget-->
+                <div class="card mb-4 mt-3">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Suggested Users</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#!">Web Design</a></li>
+                                    <li><a href="#!">HTML</a></li>
+                                    <li><a href="#!">Freebies</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#!">JavaScript</a></li>
+                                    <li><a href="#!">CSS</a></li>
+                                    <li><a href="#!">Tutorials</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Side Widget</div>
+                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{%endblock%}
