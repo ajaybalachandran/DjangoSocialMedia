@@ -24,6 +24,10 @@ class RegistrationView(CreateView):
   form_class = RegistrationForm
   template_name = 'signup.html'
   success_url = reverse_lazy('social-login')
+  
+  def form_valid(self, form):
+    form.instance.profile_pic = self.request.FILES['profile_pic']
+    return super().form_valid(form)
 
 
 class LoginView(FormView):
@@ -56,7 +60,7 @@ class PostsView(View):
   def post(self, request, *args, **kwargs):
     title = request.POST.get('title')
     description = request.POST.get('description')
-    post_image = request.POST.get('post_image')
+    post_image = request.FILES['post_image']
     Posts.objects.create(title=title, description=description, 
     post_image=post_image, user=request.user)
     return redirect('social-home')
