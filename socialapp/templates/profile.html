@@ -1,69 +1,266 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Profile Card</title>
-	<!-- Font Awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-<!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-<!-- Bootstrap core CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-<!-- Material Design Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-	<div class="container">
-     	<div class="row d-flex justify-content-center">
-            <div class="col-md-10 mt-5 pt-5">
-             	<div class="row z-depth-3">
-                 	<div class="col-sm-4 bg-info rounded-left">
-        		        <div class="card-block text-center text-white">
-                        <img
-                        src="{{request.user.profile_pic.url}}"
-                        class="rounded-circle  d-inline mt-5"
-                        alt="avatar"
-                        style="width: 38px; height: 38px; object-fit: cover"
-                        />
-                    		<h2 class="font-weight-bold mt-4">Nickson</h2>
-                    		<p>Web Designer</p><i class="far fa-edit fa-2x mb-4"></i>
-                		</div>
-            		</div>
-            		<div class="col-sm-8 bg-white rounded-right">
-                    	<h3 class="mt-3 text-center">Information</h3>
-                    	<hr class="bg-primary mt-0 w-25">
-                   		<div class="row">
-                        	<div class="col-sm-6">
-                            	<p class="font-weight-bold">Email:</p>
-                           		<h6 class=" text-muted">nick32@gmail.com</h6>
-                        	</div>
-                        	<div class="col-sm-6">
-                            	<p class="font-weight-bold">Phone:</p>
-                           		<h6 class="text-muted">+921234567890</h6>
-                        	</div>
-                    	</div>
-                    		<h4 class="mt-3">Projects</h4>
-                    		<hr class="bg-primary">
-                   		<div class="row">
-                        	<div class="col-sm-6">
-                           		<p class="font-weight-bold">Recent</p>
-                          	  	<h6 class="text-muted">School Web</h6>
-                        	</div>
-                        	<div class="col-sm-6">
-                            	<p class="font-weight-bold">Most Viewed</p>
-                            	<h6 class="text-muted">Dinoter husainm</h6>
-                        	</div>
-                    	</div>
-                	   	<hr class="bg-primary">
-                	    <ul class="list-unstyled d-flex justify-content-center mt-4">
-            	        	<li><a href="#!"><i class="fab fa-facebook-f px-3 h4 text-info"></i></a></li>
-        	            	<li><a href="#!"><i class="fab fa-youtube px-3 h4 text-info"></i></a></li>
-    	                	<li><a href="#!"><i class="fab fa-twitter px-3 h4 text-info"></i></a></li>
-	               		</ul>  
-              		</div>
-             	</div>
+{%extends 'base.html'%}
+{%block body_block%}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-2"></div>
+		<div class="col-8" style="min-height: 100vh;">
+			<div>
+				<div class="d-flex justify-content-center">
+					<div>
+						<a href="" data-bs-toggle="modal" data-bs-target="#profilePic" role="button">
+							<img
+							src="{{request.user.profile_pic.url}}"
+							class="rounded-circle  d-inline"
+							alt="avatar"
+							style="width: 100px; height: 100px; object-fit: cover"
+							/>
+						</a>
+					</div>
+				</div>
+				<!-- profile pic change modal -->
+				<div class="modal fade mt-5" id="profilePic" tabindex="-1" aria-labelledby="profilePicLabel"
+        	aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="profilePicLabel">Change Profile Picture</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close">
+									</button>
+              </div>
+              <div class="modal-body">
+                  <img src="{{request.user.profile_pic.url}}" alt="avatar" class="w-100 me-2" />
+              </div>
+              <div class="modal-footer">
+              	<form action="{%url 'social-change-propic'%}" method="post" enctype="multipart/form-data" 						class="d-flex justify-content-center align-content-center">
+                  {% csrf_token %}
+                  <input type="file" name="profile_pic">
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
-	</div>
-</body>
-</html>
+				<!-- profile change modal ended -->
+				<div class="d-flex justify-content-center">
+					<div>
+						<h3>{{request.user}}</h3>
+					</div>
+					
+				</div>
+				{%if request.user.userprofile%}
+				<div class="d-flex justify-content-center">
+					<a href="{%url 'social-edit-profile'%}" ><i class="fa-solid fa-pen-to-square "></i></a>
+				</div>
+				{%else%}
+				<div class="d-flex justify-content-center">
+					<a href="{%url 'social-add-profile'%}" ><i class="fa-solid fa-plus"></i></a>
+				</div>
+				{%endif%}
 
+				<div class="d-flex justify-content-center">
+					<div>
+						<a href="" class="btn me-4">0 Posts</a>
+					</div>
+					<div>
+						<a href="" class="btn me-4">0 Followers</a>
+					</div>
+					<div>
+						<a href="" class="btn">0 Following</a>
+					</div>
+				</div>
+				<div class="d-flex justify-content-center">
+					{%if request.user.userprofile.bio%}
+					<div class="border">
+						{{request.user.userprofile.bio}}
+					</div>
+					{%endif%}
+				</div>
+				<hr>
+				{%if myposts%}
+				{%for post in myposts%}
+				<div class="d-flex justify-content-center">
+					<div class="bg-white p-4 rounded shadow mt-3 mb-3">
+						<!-- author -->
+						<div class="d-flex justify-content-between">
+								<!-- avatar -->
+								<div class="d-flex">
+										<img
+												src="{{post.user.profile_pic.url}}"
+												alt="avatar"
+												class="rounded-circle me-2"
+												style="width: 38px; height: 38px; object-fit: cover"
+										/>
+										<div>
+												<p class="m-0 fw-bold">{{post.user}}</p>
+												<span class="text-muted fs-7">{{post.posted_date}}</span>
+										</div>
+								</div>
+								<!-- edit -->
+								<i
+								class="fas fa-ellipsis-h"
+								type="button"
+								id="post1Menu"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+								>
+								</i>
+								<!-- edit menu -->
+								<ul
+								class="dropdown-menu border-0 shadow"
+								aria-labelledby="post1Menu"
+								>
+										<li class="d-flex align-items-center">
+												<a
+														class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+														href="#"
+												>
+														Edit Post
+												</a>
+										</li>
+										<li class="d-flex align-items-center">
+												<a
+												class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+												href="#"
+												>
+												Delete Post</a
+												>
+										</li>
+								</ul>
+						</div>
+
+
+
+						<!-- post content -->
+						<div class="mt-3">
+								<!-- content -->
+								<div>
+										<p>
+												{{post.title}}
+										</p>
+										<p>
+												{{post.description}}
+										</p>
+										<img
+												src="{{post.post_image.url}}"
+												alt="post image"
+												class="img-fluid rounded"
+										/>
+								</div>
+								<!-- likes & comments -->
+								<div class="mt-3 d-flex justify-content-between">
+										<div><i class="text-primary fas fa-thumbs-up"></i> 10</div>
+										<div>2 Comments</i></div>
+								</div>
+								<hr>
+								<!-- comment&like buttons -->
+								<div class="d-flex justify-content-between">
+										<div>
+												<a href="" class="btn text-muted" style="border: none;">
+														<i class="fas fa-thumbs-up me-3"></i>
+														<span class="m-0">Like</span>
+												</a>
+										
+										</div>
+										<div>
+												<a class="btn text-muted" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+														<i class="fas fa-comment-alt me-3"></i>
+														<span class="m-0">Comment</span>
+												</a>
+										</div>
+								</div>
+								<!-- comment collapse -->
+								<div class="collapse mt-3" id="collapseExample">
+										<div class="card card-body">
+												<!-- comment 1 -->
+												<div class="d-flex align-items-center my-1">
+														<!-- avatar -->
+														<img
+														src="https://source.unsplash.com/collection/happy-people"
+														alt="avatar"
+														class="rounded-circle me-2"
+														style="
+																width: 38px;
+																height: 38px;
+																object-fit: cover;
+														"
+														/>
+														<!-- comment text -->
+														<div class="p-3 rounded comment__input w-100">
+																<!-- comment menu of author -->
+																<div class="d-flex justify-content-end">
+																		<!-- icon -->
+																		<i
+																		class="fas fa-ellipsis-h text-blue pointer"
+																		id="post1CommentMenuButton"
+																		data-bs-toggle="dropdown"
+																		aria-expanded="false"
+																		></i>
+																		<!-- menu -->
+																		<ul
+																		class="dropdown-menu border-0 shadow"
+																		aria-labelledby="post1CommentMenuButton"
+																		>
+																				<li class="d-flex align-items-center">
+																						<a
+																						class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+																						href="#"
+																						>
+																						Edit Comment</a
+																						>
+																				</li>
+																				<li class="d-flex align-items-center">
+																						<a
+																						class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+																						href="#"
+																						>
+																						Delete Comment</a
+																						>
+																				</li>
+																		</ul>
+																</div>
+																<p class="fw-bold m-0">John</p>
+																<p class="m-0 fs-7 bg-gray p-2 rounded">
+																		Lorem ipsum dolor sit amet, consectetur
+																		adipiscing elit.
+																</p>
+														</div>
+												</div>
+												<form class="d-flex my-1">
+														<!-- avatar -->
+														<div>
+																<img
+																		src="{{request.user.profile_pic.url}}"
+																		class="rounded-circle me-2"
+																		style="
+																		width: 38px;
+																		height: 38px;
+																		object-fit: cover;
+																		"
+																/>
+														</div>
+														<!-- input -->
+														<input
+														type="text"
+														class="form-control border-0 rounded-pill bg-gray"
+														placeholder="Write a comment"
+														/>
+												</form>
+										</div>
+								</div>
+						</div>
+				</div>
+				</div>
+				{%endfor%}
+				{%else%}
+					<p>No Posts Yet</p>
+				{%endif%}
+				<!-- <a href="" class="btn btn-primary">Edit Profile</a> -->
+				
+			</div>
+
+		</div>
+		<div class="col-2"></div>
+	</div>
+</div>
+{%endblock%}

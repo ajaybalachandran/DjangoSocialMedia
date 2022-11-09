@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, FormView, TemplateView, ListView
-from socialapp.forms import RegistrationForm, LoginForm
-from socialapp.models import Myuser, Posts
+from socialapp.forms import RegistrationForm, LoginForm, ProfileForm, ProfilePicChangeForm
+from socialapp.models import Myuser, Posts, UserProfile
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
@@ -18,8 +18,8 @@ def signin_required(fn):
 @method_decorator(signin_required, name='dispatch')
 class HomeView(View):
   def get(self, request, *args, **kwargs):
-    
-    posts = Posts.objects.all().exclude(user=self.request.user)
+    # posts = Posts.objects.all().exclude(user=self.request.user)
+    posts = Posts.objects.all()
     if posts:
       return render(request, 'index.html', {'allposts': posts})
     else:
@@ -77,3 +77,44 @@ class PostsView(View):
 #   model = Posts
 #   context_object_name = 'allposts'
 
+
+class MyProfileView(View):
+  def get(self, request, *args, **kwargs):
+    posts = request.user.my_post.all()
+    return render(request, 'profile.html', {'myposts': posts})
+
+
+class AddProfileView(CreateView):
+  model = UserProfile
+  form_class = ProfileForm
+  template_name = 'profile_add_edit.html'
+  success_url = reverse_lazy('social-my-profile')
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
+
+class ProfileEditView(View):
+  def get(self, request, *args, **kwargs):
+    data = UserProfile.objects.get(user=request.user)
+    form = ProfileForm(instance=data)
+    return render(request, 'profile_add_edit.html', {'form': form})
+
+  def post(self, request, *args, **kwargs):
+    profile = UserProfile.objects.get(user=request.user)
+    form = ProfileForm(request.POST, instance=profile)
+    if form.is_valid():
+      form.save()
+      return redirect('social-my-profile')
+
+
+class ChangeProfilePicView(View):
+  def get(self, request):
+        return render(request, 'profile.html')
+
+  def post(self, request):
+    form = ProfilePicChangeForm(request.POST, request.FILES, instance=request.user)
+    if form.is_valid():
+      form.save()
+      return redirect('social-my-profile')

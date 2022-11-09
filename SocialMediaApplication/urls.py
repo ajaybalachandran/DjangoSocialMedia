@@ -26,7 +26,11 @@ urlpatterns = [
     path('accounts/signup/', views.RegistrationView.as_view(), name='social-signup'),
     path('login/', views.LoginView.as_view(), name='social-login'),
     path('logout/', views.signout_view, name='social-logout'),
-    path('newpost/', views.PostsView.as_view(), name='social-new-post')
+    path('newpost/', views.PostsView.as_view(), name='social-new-post'),
+    path('profile/', views.MyProfileView.as_view(), name='social-my-profile'),
+    path('user/myprofileadd/', views.AddProfileView.as_view(), name='social-add-profile'), 
+    path('user/profileedit/', views.ProfileEditView.as_view(), name='social-edit-profile'),
+    path('user/profilepic_change/', views.ChangeProfilePicView.as_view(), name='social-change-propic')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
