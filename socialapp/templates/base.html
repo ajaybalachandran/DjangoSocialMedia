@@ -26,7 +26,7 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark position-fixed-bottom">
             <div class="container">
-                <a class="navbar-brand" href="#!">SnapDiary</a>
+                <a class="navbar-brand" href="{%url 'social-home'%}"><i class="fa-brands fa-squarespace me-2"></i>SnapDiary</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -67,5 +67,7 @@
         <!-- Core theme JS-->
         <script src={%static 'js/scripts.js'%}></script>
         <!-- <script src={%static 'js/main.js'%}></script> -->
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>
 </html>

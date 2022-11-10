@@ -5,6 +5,8 @@ from socialapp.models import Myuser, Posts, UserProfile, Comments
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signin_required(fn):
@@ -15,7 +17,9 @@ def signin_required(fn):
       return fn(request, *args, **kwargs)
   return wrapper
 
-@method_decorator(signin_required, name='dispatch')
+decs = [signin_required, never_cache]
+
+@method_decorator(decs, name='dispatch')
 class HomeView(View):
   def get(self, request, *args, **kwargs):
     # posts = Posts.objects.all().exclude(user=self.request.user)
@@ -53,12 +57,13 @@ class LoginView(FormView):
         return redirect('social-login')
 
 
+decs
 def signout_view(request,  *args, **kwargs):
   logout(request)
   return redirect('social-login')
 
 
-@method_decorator(signin_required, name='dispatch')
+@method_decorator(decs, name='dispatch')
 class PostsView(View):
   def get(self, request, *args, **kwargs):
     return render(request, 'newpost.html')
@@ -78,12 +83,14 @@ class PostsView(View):
 #   context_object_name = 'allposts'
 
 
+@method_decorator(decs, name='dispatch')
 class MyProfileView(View):
   def get(self, request, *args, **kwargs):
     posts = request.user.my_post.all()
     return render(request, 'profile.html', {'myposts': posts})
 
 
+@method_decorator(decs, name='dispatch')
 class AddProfileView(CreateView):
   model = UserProfile
   form_class = ProfileForm
@@ -95,6 +102,7 @@ class AddProfileView(CreateView):
     return super().form_valid(form)
 
 
+@method_decorator(decs, name='dispatch')
 class ProfileEditView(View):
   def get(self, request, *args, **kwargs):
     data = UserProfile.objects.get(user=request.user)
@@ -109,6 +117,7 @@ class ProfileEditView(View):
       return redirect('social-my-profile')
 
 
+@method_decorator(decs, name='dispatch')
 class ChangeProfilePicView(View):
   def get(self, request):
         return render(request, 'profile.html')
@@ -120,6 +129,8 @@ class ChangeProfilePicView(View):
       return redirect('social-my-profile')
 
 
+
+decs
 def add_comment_view(request, *args, **kwargs):
   if request.method == 'POST':
     post_id = kwargs.get('id')
@@ -131,6 +142,8 @@ def add_comment_view(request, *args, **kwargs):
     return redirect('social-home')
 
 
+decs
+@login_required
 def add_like_view(request, *args, **kwargs):
   if request.method == 'POST':
     id = kwargs.get('id')
@@ -142,6 +155,8 @@ def add_like_view(request, *args, **kwargs):
     return redirect('social-home')
 
 
+decs
+@login_required
 def others_profile_view(request, *args, **kwargs):
   id = kwargs.get('id')
   user = Myuser.objects.get(id=id)
@@ -149,20 +164,37 @@ def others_profile_view(request, *args, **kwargs):
   return render(request, 'other-profile.html', {'other_user': user, 'otherposts': posts})
       
 
-@method_decorator(signin_required, name='dispatch')
+@method_decorator(decs, name='dispatch')
 class FollowView(View):
   def post(self, request, *args, **kwargs):
     id = kwargs.get('id')
-    follow_user = Myuser.objects.get(id=id)
-    follow_user_profile = UserProfile.objects.get(user=follow_user)
-    follow_user_profile.followers.add(request.user)
-    follow_user_profile.save()
+    # here other_user is the user who is going to followed by the request.useryyyyy
+    other_user = Myuser.objects.get(id=id)
+    # other_user_profile = UserProfile.objects.get(user=other_user)
+    other_user_profile = other_user.user_profile
+    other_user_profile.followers.add(request.user)
+    other_user_profile.save()
 
-    following_user_profile = request.user.user_profile
-    following_user_profile.following.add(follow_user)
-    following_user_profile.save()
-    posts = follow_user.my_post.all()
-    return render(request, 'other-profile.html', {'other_user': follow_user, 'otherposts': posts})
+    user_profile = request.user.user_profile
+    user_profile.following.add(other_user)
+    user_profile.save()
+    posts = other_user.my_post.all()
+    return render(request, 'other-profile.html', {'other_user': other_user, 'otherposts': posts})
+
+
+class UnfollowView(View):
+  def post(self, request, *args, **kwargs):
+    id = kwargs.get('id')
+    other_user = Myuser.objects.get(id=id)
+    other_user_profile = other_user.user_profile
+    other_user_profile.followers.remove(request.user)
+    other_user_profile.save()
+
+    user_profile = request.user.user_profile
+    user_profile.following.remove(other_user)
+    user_profile.save()
+    posts = other_user.my_post.all()
+    return render(request, 'other-profile.html', {'other_user': other_user, 'otherposts': posts})
 
 
 

@@ -21,6 +21,10 @@ class UserProfile(models.Model):
   followers = models.ManyToManyField(Myuser, related_name='followerslist', blank=True)
 
   @property
+  def get_followers(self):
+    return self.followers.all()
+    
+  @property
   def get_followings(self):
     return self.following.all()
 

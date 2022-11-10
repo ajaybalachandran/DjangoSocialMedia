@@ -25,35 +25,48 @@
 					
 				</div>
         
-				
-				<div class="d-flex justify-content-center">
-					<form action="{%url 'social-follow' other_user.id%}" method="post">
-            {%csrf_token%}
-            {%if other_user not in request.user.user_profile.get_followings%}
-            <input type="submit" value="Follow" class="btn btn-primary btn-sm">
-            {%else%}
-            <input type="submit" value="Unfollow" class="btn btn-primary btn-sm">
-            {%endif%}
-          </form>
-				</div>
-				
+				{%if request.user.user_profile%}
+					{%if other_user.user_profile%}
+						<div class="d-flex justify-content-center">
+							{%if other_user not in request.user.user_profile.get_followings%}
+								<form action="{%url 'social-follow' other_user.id%}" method="post">
+									{%csrf_token%}
+									<input type="submit" value="Follow" class="btn btn-primary btn-sm">
+								</form>
+							{%else%}
+								<form action="{%url 'social-unfollow' other_user.id%}" method="post">
+									{%csrf_token%}
+									<input type="submit" value="Unfollow" class="btn btn-primary btn-sm">
+								</form>
+							{%endif%}
+						</div>
+					{%endif%}
+				{%endif%}
         
 
 				<div class="d-flex justify-content-center">
 					{%if other_user.my_post.all%}
-					<div>
-						<a href="" class="btn me-4">{{other_user.my_post.count}} Posts</a>
-					</div>
+						<div>
+							<a href="" class="btn me-4">{{other_user.my_post.count}} Posts</a>
+						</div>
 					{%else%}
-					<div>
-						<a href="" class="btn me-4">0 Posts</a>
-					</div>
+						<div>
+							<a href="" class="btn me-4">0 Posts</a>
+						</div>
 					{%endif%}
 					<div>
-						<a href="" class="btn me-4">0 Followers</a>
+						{%if other_user.user_profile%}
+							<a href="" class="btn me-4">{{other_user.user_profile.get_followers.count}} Followers</a>
+						{%else%}
+							<a href="" class="btn me-4">0 Followers</a>
+						{%endif%}
 					</div>
 					<div>
-						<a href="" class="btn">0 Following</a>
+						{%if other_user.user_profile%}
+							<a href="" class="btn">{{other_user.user_profile.get_followings.count}} Following</a>
+						{%else%}
+							<a href="" class="btn me-4">0 Following</a>
+						{%endif%}
 					</div>
 				</div>
 				<div class="d-flex justify-content-center">

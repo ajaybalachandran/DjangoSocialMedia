@@ -4,9 +4,9 @@
 
 <!-- Page content-->
 <div class="container">
-    <div class="row">
+    <div class="row d-flex justify-content-between flex-wrap-reverse">
         <!-- Blog entries-->
-        <div class="col-lg-8" style="min-height: 100vh;">
+        <div class="col-lg-8 align-self-lg-top" style="min-height: 100vh;">
             <!-- create a post -->
             <div>
                 <div class="d-flex bg-white p-4 rounded shadow  mb-3" type="button">
@@ -156,7 +156,7 @@
                         </div>
                         <div>
                             <a class="btn text-muted" data-bs-toggle="collapse" href="#collapseExample{{post.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fas fa-comment-alt me-3"></i>
+                                <i class="fas fa-comment-alt "></i>
                                 <span class="m-0">Comment</span>
                             </a>
                         </div>
@@ -252,7 +252,7 @@
                                         />
                                         </div>
                                         <div class="col-2">
-                                           <input type="submit" value="Post" class="btn btn-success">
+                                           <input type="submit" value="Post" class="btn btn-success btn-sm">
                                         </div>
                                     </div>
                                 </div>
@@ -268,12 +268,12 @@
         
 
         <!-- Side widgets-->
-        <div class="col-12 col-lg-4 scrollbar h-100" style="position: fixed; top: 5%; right: 0; z-index: 4;">
+        <div class="col-lg-4">
             
-            <div class="d-none d-lg-block">
+            <!-- <div class="d-none d-lg-block"> -->
                 <!-- Search widget-->
-                <div class="card mb-4 mt-3">
-                    <div class="card-header">Search</div>
+                <div class="card mb-4 mt-3 ">
+                    
                     <div class="card-body">
                         <div class="input-group">
                             <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
@@ -282,33 +282,45 @@
                     </div>
                 </div>
                 <!-- Categories widget-->
-                <div class="card mb-4">
+                <div class="card mb-4 d-none d-lg-block  flex-column align-items-stretch  border-end" id="suggetion">
                     <div class="card-header">Suggested Users</div>
+                    <!--  -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">Web Design</a></li>
-                                    <li><a href="#!">HTML</a></li>
-                                    <li><a href="#!">Freebies</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">JavaScript</a></li>
-                                    <li><a href="#!">CSS</a></li>
-                                    <li><a href="#!">Tutorials</a></li>
-                                </ul>
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="d-flex justify-content-center">
+                                                <div>
+                                                    <img
+                                                    src="{{request.user.profile_pic.url}}"
+                                                    class="rounded-circle  d-inline border border-gray"
+                                                    alt="avatar"
+                                                    style="width: 100px; height: 100px; object-fit: cover"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 d-flex flex-column justify-content-evenly">
+                                            <div class="">
+                                                <h5>{{request.user}}</h5>
+                                            </div>
+                                            <div>
+                                                <form action="" method="post">
+                                                    {%csrf_token%}
+                                                    <input type="submit" value="Follow" class="btn btn-primary btn-sm">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!--  -->
                 </div>
-                <!-- Side widget-->
-                <div class="card mb-4">
-                    <div class="card-header">Side Widget</div>
-                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                </div>
-            </div>
+            <!-- </div> -->
 
         </div>
     </div>

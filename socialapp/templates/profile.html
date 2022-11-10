@@ -60,19 +60,27 @@
 
 				<div class="d-flex justify-content-center">
 					{%if request.user.my_post.all%}
-					<div>
-						<a href="" class="btn me-4">{{request.user.my_post.count}} Posts</a>
-					</div>
+						<div>
+							<a href="" class="btn me-4">{{request.user.my_post.count}} Posts</a>
+						</div>
 					{%else%}
-					<div>
-						<a href="" class="btn me-4">0 Posts</a>
-					</div>
+						<div>
+							<a href="" class="btn me-4">0 Posts</a>
+						</div>
 					{%endif%}
 					<div>
-						<a href="" class="btn me-4">0 Followers</a>
+						{%if request.user.user_profile%}
+							<a href="" class="btn me-4">{{request.user.user_profile.get_followers.count}} Followers</a>
+						{%else%}
+							<a href="" class="btn me-4">0 Followers</a>
+						{%endif%}
 					</div>
 					<div>
-						<a href="" class="btn">0 Following</a>
+						{%if request.user.user_profile%}
+							<a href="" class="btn">{{request.user.user_profile.get_followings.count}} Following</a>
+						{%else%}
+							<a href="" class="btn me-4">0 Following</a>
+						{%endif%}
 					</div>
 				</div>
 				<div class="d-flex justify-content-center">
