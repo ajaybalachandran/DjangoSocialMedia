@@ -59,9 +59,15 @@
 				{%endif%}
 
 				<div class="d-flex justify-content-center">
+					{%if request.user.my_post.all%}
+					<div>
+						<a href="" class="btn me-4">{{request.user.my_post.count}} Posts</a>
+					</div>
+					{%else%}
 					<div>
 						<a href="" class="btn me-4">0 Posts</a>
 					</div>
+					{%endif%}
 					<div>
 						<a href="" class="btn me-4">0 Followers</a>
 					</div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, FormView, TemplateView, ListView
 from socialapp.forms import RegistrationForm, LoginForm, ProfileForm, ProfilePicChangeForm
-from socialapp.models import Myuser, Posts, UserProfile
+from socialapp.models import Myuser, Posts, UserProfile, Comments
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
@@ -118,3 +118,47 @@ class ChangeProfilePicView(View):
     if form.is_valid():
       form.save()
       return redirect('social-my-profile')
+
+
+def add_comment_view(request, *args, **kwargs):
+  if request.method == 'POST':
+    post_id = kwargs.get('id')
+    post = Posts.objects.get(id=post_id)
+    comment = request.POST.get('comment')
+    Comments.objects.create(post=post, user=request.user, comment=comment)
+    return redirect('social-home')
+  else:
+    return redirect('social-home')
+
+
+def add_like_view(request, *args, **kwargs):
+  if request.method == 'POST':
+    id = kwargs.get('id')
+    post = Posts.objects.get(id=id)
+    if request.user not in post.liked_by.all():
+      post.liked_by.add(request.user)
+    else:
+      post.liked_by.remove(request.user)
+    return redirect('social-home')
+
+
+def others_profile_view(request, *args, **kwargs):
+  id = kwargs.get('id')
+  user = Myuser.objects.get(id=id)
+  posts = user.my_post.all()
+  return render(request, 'other-profile.html', {'other_user': user, 'otherposts': posts})
+      
+
+@method_decorator(signin_required, name='dispatch')
+class FollowView(View):
+  def post(self, request, *args, **kwargs):
+    id = self.kwargs.get('id')
+    print(type(id))
+    follow_user = Myuser.objects.get(id=id)
+    follow_user_profile = UserProfile.objects.get(user=follow_user)
+    print(follow_user_profile)
+    print(type(follow_user))
+    print(type(self.request.user))
+    follow_user.followers.add(request.user)
+    request.user.following.add(follow_user)
+    return redirect('social-other-profile')

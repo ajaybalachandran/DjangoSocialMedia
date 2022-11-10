@@ -33,6 +33,12 @@ class ProfileForm(forms.ModelForm):
   class Meta:
     model = UserProfile
     fields = ['bio', 'mobile', 'dob', 'gender']
+    widgets = {
+      'bio': forms.Textarea(attrs={'class': 'form-control', 'required':'true'}),
+      'mobile': forms.NumberInput(attrs={'class': 'form-control'}),
+      'dob': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'date of birth'}),
+      'gender': forms.Select(attrs={'class': 'form-control'})
+    }
 
 
 class ProfilePicChangeForm(forms.ModelForm):
