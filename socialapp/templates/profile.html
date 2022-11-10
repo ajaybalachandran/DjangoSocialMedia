@@ -48,7 +48,7 @@
 					</div>
 					
 				</div>
-				{%if request.user.userprofile%}
+				{%if request.user.user_profile%}
 				<div class="d-flex justify-content-center">
 					<a href="{%url 'social-edit-profile'%}" ><i class="fa-solid fa-pen-to-square "></i></a>
 				</div>
@@ -76,9 +76,9 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center">
-					{%if request.user.userprofile.bio%}
+					{%if request.user.user_profile.bio%}
 					<div class="border">
-						{{request.user.userprofile.bio}}
+						{{request.user.user_profile.bio}}
 					</div>
 					{%endif%}
 				</div>

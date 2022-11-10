@@ -29,7 +29,7 @@
 				<div class="d-flex justify-content-center">
 					<form action="{%url 'social-follow' other_user.id%}" method="post">
             {%csrf_token%}
-            {%if request.user not in other_user.followers.all%}
+            {%if other_user not in request.user.user_profile.get_followings%}
             <input type="submit" value="Follow" class="btn btn-primary btn-sm">
             {%else%}
             <input type="submit" value="Unfollow" class="btn btn-primary btn-sm">
@@ -57,9 +57,9 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center">
-					{%if other_user.userprofile.bio%}
+					{%if other_user.user_profile.bio%}
 					<div class="border">
-						{{other_user.userprofile.bio}}
+						{{other_user.user_profile.bio}}
 					</div>
 					{%endif%}
 				</div>

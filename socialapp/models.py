@@ -7,7 +7,7 @@ class Myuser(AbstractUser):
 
 
 class UserProfile(models.Model):
-  user = models.OneToOneField(Myuser, on_delete=models.CASCADE, related_name='userprofile')
+  user = models.OneToOneField(Myuser, on_delete=models.CASCADE, related_name='user_profile')
   bio = models.CharField(max_length=120, null=True, blank=True)
   mobile = models.CharField(max_length=12, null=True, blank=True)
   dob = models.DateField(null=True, blank=True)
@@ -17,8 +17,12 @@ class UserProfile(models.Model):
     ('Others', 'Others')
   )
   gender = models.CharField(max_length=12, choices=GENDER_CHOICES, null=True, blank=True)
-  following = models.ManyToManyField(Myuser, related_name='following')
-  followers = models.ManyToManyField(Myuser, related_name='followers')
+  following = models.ManyToManyField(Myuser, related_name='followinglist', blank=True)
+  followers = models.ManyToManyField(Myuser, related_name='followerslist', blank=True)
+
+  @property
+  def get_followings(self):
+    return self.following.all()
 
 
 class Posts(models.Model):

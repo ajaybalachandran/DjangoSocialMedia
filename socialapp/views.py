@@ -152,13 +152,17 @@ def others_profile_view(request, *args, **kwargs):
 @method_decorator(signin_required, name='dispatch')
 class FollowView(View):
   def post(self, request, *args, **kwargs):
-    id = self.kwargs.get('id')
-    print(type(id))
+    id = kwargs.get('id')
     follow_user = Myuser.objects.get(id=id)
     follow_user_profile = UserProfile.objects.get(user=follow_user)
-    print(follow_user_profile)
-    print(type(follow_user))
-    print(type(self.request.user))
-    follow_user.followers.add(request.user)
-    request.user.following.add(follow_user)
-    return redirect('social-other-profile')
+    follow_user_profile.followers.add(request.user)
+    follow_user_profile.save()
+
+    following_user_profile = request.user.user_profile
+    following_user_profile.following.add(follow_user)
+    following_user_profile.save()
+    posts = follow_user.my_post.all()
+    return render(request, 'other-profile.html', {'other_user': follow_user, 'otherposts': posts})
+
+
+
